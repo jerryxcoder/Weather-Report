@@ -1,0 +1,38 @@
+<!doctype=html>
+<html>
+    <head>
+        <script  src="https://code.jquery.com/jquery-3.1.1.js"
+  integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+  crossorigin="anonymous"></script>
+
+
+<script>
+$(document).ready(function(){
+    $("button").click(function(){
+        var city= $("#City").val();
+        var state= $("#State").val(); 
+        var url="https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text%3D%22" + city + "," + state +"%22)&format=json";
+        $.getJSON(url,
+        function(jd)
+        { 
+        High=JSON.parse(jd.query.results.channel.item.forecast[0].high);
+        Low=JSON.parse(jd.query.results.channel.item.forecast[0].low);
+        $("#test1").html("Today's temperature of "+city+" has high of "+High+" F, and low of "+Low+" F"); 
+        }
+      );
+    });
+});
+</script>
+</head>
+
+<body>
+     <p>City: <input type="text" id="City"></p>
+     <p>State: <input type="text" id="State"></p>
+     <p id="test1"></p>
+<button>Get Weather</button>
+
+
+
+</body>
+
+</html>
